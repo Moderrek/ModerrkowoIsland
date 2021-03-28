@@ -22,8 +22,9 @@ public class DataManager {
             case "true":
             case "1":
                 return true;
+            default:
+                return false;
         }
-        return false;
     }
 
     @Contract(pure = true)

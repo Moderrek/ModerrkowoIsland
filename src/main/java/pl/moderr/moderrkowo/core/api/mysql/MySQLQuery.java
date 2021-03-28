@@ -22,6 +22,7 @@ import java.util.UUID;
 public class MySQLQuery {
 
     private final MySQL mySQL;
+
     @Contract(pure = true)
     public MySQLQuery(MySQL mySQL){
         this.mySQL = mySQL;
@@ -247,6 +248,6 @@ public class MySQLQuery {
         });
     }
     public void updateLocalUserAsync(String id, IDType idType, IMySQLCallback<Boolean> callback){
-        
+
     }
 }
