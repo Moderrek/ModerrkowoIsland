@@ -5,6 +5,8 @@ import org.bukkit.entity.Player;
 import org.jetbrains.annotations.Contract;
 import pl.moderr.moderrkowo.core.api.exceptions.UserIsOffline;
 import pl.moderr.moderrkowo.core.api.mysql.MySQL;
+import pl.moderr.moderrkowo.core.api.mysql.callback.IMySQLUpdateCallback;
+import pl.moderr.moderrkowo.core.api.mysql.type.IDType;
 
 import java.util.UUID;
 
@@ -71,8 +73,8 @@ public class LocalUser {
         }
     }
 
-    public void Save(){
-        //TODO save user
+    public void Save(IMySQLUpdateCallback callback){
+        getMySQL().getQueries().updateLocalUserAsync(getGlobalUUID(), IDType.GlobalUUID, this, callback);
     }
     public MySQL getMySQL() {
         return mySQL;

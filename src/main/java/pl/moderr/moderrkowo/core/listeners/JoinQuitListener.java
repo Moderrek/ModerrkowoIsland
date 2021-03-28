@@ -15,7 +15,7 @@ public class JoinQuitListener implements Listener {
 
     @EventHandler
     public void onQuit(PlayerQuitEvent e){
-        e.setQuitMessage(ColorUtils.color("&8» &c" + e.getPlayer().getName() + " odpłynął z wyspy"));
+        e.setQuitMessage(ColorUtils.color("&8» &a" + e.getPlayer().getName() + " odpłynął z wyspy"));
     }
 
 }

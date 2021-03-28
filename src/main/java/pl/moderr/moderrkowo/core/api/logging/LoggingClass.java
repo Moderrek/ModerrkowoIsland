@@ -1,4 +1,4 @@
-package pl.moderr.moderrkowo.core.api.utils.logging;
+package pl.moderr.moderrkowo.core.api.logging;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;

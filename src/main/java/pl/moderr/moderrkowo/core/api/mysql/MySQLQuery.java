@@ -1,17 +1,17 @@
 package pl.moderr.moderrkowo.core.api.mysql;
 
-import com.sun.org.apache.xpath.internal.operations.Bool;
 import org.bukkit.Bukkit;
 import org.jetbrains.annotations.Contract;
-import org.junit.Test;
 import pl.moderr.moderrkowo.core.Main;
 import pl.moderr.moderrkowo.core.api.exceptions.IDTypeUnknown;
 import pl.moderr.moderrkowo.core.api.exceptions.UserNotFound;
+import pl.moderr.moderrkowo.core.api.logging.LogType;
+import pl.moderr.moderrkowo.core.api.logging.LoggingClass;
+import pl.moderr.moderrkowo.core.api.logging.ModerrkowoLogger;
+import pl.moderr.moderrkowo.core.api.mysql.callback.IMySQLCallback;
+import pl.moderr.moderrkowo.core.api.mysql.callback.IMySQLUpdateCallback;
 import pl.moderr.moderrkowo.core.api.mysql.struct.LocalUser;
 import pl.moderr.moderrkowo.core.api.mysql.type.IDType;
-import pl.moderr.moderrkowo.core.api.utils.logging.LogType;
-import pl.moderr.moderrkowo.core.api.utils.logging.LoggingClass;
-import pl.moderr.moderrkowo.core.api.utils.logging.ModerrkowoLogger;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -227,8 +227,12 @@ public class MySQLQuery {
                                 rs.getDouble("MONEY"),
                                 rs.getFloat("MODERRCOIN")
                         );
+                        rs.close();
+                        preparedStatement.close();
                     }else{
                         // not exists
+                        rs.close();
+                        preparedStatement.close();
                         callback.onFailure(new UserNotFound());
                         ModerrkowoLogger.log("Nie znaleziono użytkownika (ASYNC)", this);
                         return;
@@ -247,7 +251,45 @@ public class MySQLQuery {
             }
         });
     }
-    public void updateLocalUserAsync(String id, IDType idType, IMySQLCallback<Boolean> callback){
-
+    public void updateLocalUserAsync(String id, IDType idType, LocalUser user, IMySQLUpdateCallback callback){
+        Bukkit.getScheduler().runTaskAsynchronously(Main.getInstance(), new Runnable() {
+            @Override
+            public void run() {
+                long start = System.currentTimeMillis();
+                callback.startUpdate();
+                ModerrkowoLogger.log("Próba zaaktualizowania lokalnego użytkownika (ASYNC)", this);
+                try{
+                    String SQL;
+                    switch (idType){
+                        case GlobalUUID:
+                            SQL = "UPDATE `panel_data` SET `MONEY`=?,`MODERRCOIN`=? WHERE `UUID`=? LIMIT 1";
+                            break;
+                        case MinecraftUUID:
+                            SQL = "UPDATE `panel_data` SET `MONEY`=?,`MODERRCOIN`=? WHERE `SERVER_UUID`=? LIMIT 1";
+                            break;
+                        case Username:
+                            SQL = "UPDATE `panel_data` SET `MONEY`=?,`MODERRCOIN`=? WHERE `NAME`=? LIMIT 1";
+                            break;
+                        default:
+                            callback.onFailure(new IDTypeUnknown());
+                            return;
+                    }
+                    PreparedStatement preparedStatement = mySQL.getConnection().prepareStatement(SQL);
+                    preparedStatement.setDouble(1, user.getMoney());
+                    preparedStatement.setFloat(2, user.getModerrCoin());
+                    preparedStatement.setString(3, id);
+                    preparedStatement.executeUpdate();
+                    preparedStatement.close();
+                } catch (SQLException sqlBug) {
+                    sqlBug.printStackTrace();
+                    callback.onFailure(sqlBug);
+                    return;
+                }
+                Bukkit.getScheduler().runTask(Main.getInstance(), () -> {
+                    callback.onUpdated();
+                    ModerrkowoLogger.log("Wykonano zapytanie w " + (System.currentTimeMillis()-start) +  " ms (ASYNC)", this);
+                });
+            }
+        });
     }
 }

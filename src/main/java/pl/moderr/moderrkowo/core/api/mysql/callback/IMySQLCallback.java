@@ -1,4 +1,4 @@
-package pl.moderr.moderrkowo.core.api.mysql;
+package pl.moderr.moderrkowo.core.api.mysql.callback;
 
 public interface IMySQLCallback<T> {
 

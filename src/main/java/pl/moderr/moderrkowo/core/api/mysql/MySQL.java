@@ -1,9 +1,9 @@
 package pl.moderr.moderrkowo.core.api.mysql;
 
 import org.jetbrains.annotations.Contract;
-import pl.moderr.moderrkowo.core.api.utils.logging.LogType;
-import pl.moderr.moderrkowo.core.api.utils.logging.LoggingClass;
-import pl.moderr.moderrkowo.core.api.utils.logging.ModerrkowoLogger;
+import pl.moderr.moderrkowo.core.api.logging.LogType;
+import pl.moderr.moderrkowo.core.api.logging.LoggingClass;
+import pl.moderr.moderrkowo.core.api.logging.ModerrkowoLogger;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
