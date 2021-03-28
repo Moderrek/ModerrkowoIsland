@@ -1,6 +1,7 @@
 package pl.moderr.moderrkowo.core.api.management;
 
 import org.jetbrains.annotations.Contract;
+import pl.moderr.moderrkowo.core.Main;
 import pl.moderr.moderrkowo.core.api.exceptions.UserIsNotLoaded;
 import pl.moderr.moderrkowo.core.api.logging.LogType;
 import pl.moderr.moderrkowo.core.api.logging.LoggingClass;
@@ -14,10 +15,10 @@ import java.util.UUID;
 @LoggingClass(type = LogType.UserManager)
 public class UserManager {
 
-    HashMap<UUID, LocalUser> userMap;
+    private final HashMap<UUID, LocalUser> userMap;
 
     @Contract(pure = true)
-    public UserManager(){
+    public UserManager(Main main){
         userMap = new HashMap<>();
     }
 

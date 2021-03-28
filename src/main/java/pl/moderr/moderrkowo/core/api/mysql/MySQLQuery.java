@@ -79,7 +79,7 @@ public class MySQLQuery {
             @Override
             public void run() {
                 long start = System.currentTimeMillis();
-                boolean result = false;
+                boolean result;
                 ModerrkowoLogger.log("Próba sprawdzenia użytkownika (ASYNC)", this);
                 try{
                     String SQL = "SELECT `MCID` FROM `minecraft_data` WHERE `MCID`=? LIMIT 1";
@@ -103,7 +103,7 @@ public class MySQLQuery {
     }
     public boolean isMinecraftUserExists(String mcId) throws SQLException {
         long start = System.currentTimeMillis();
-        boolean result = false;
+        boolean result;
         ModerrkowoLogger.log("Próba sprawdzenia użytkownika (NORMAL)", this);
         try{
             String SQL = "SELECT `MCID` FROM `minecraft_data` WHERE `MCID`=? LIMIT 1";
@@ -125,7 +125,7 @@ public class MySQLQuery {
             @Override
             public void run() {
                 long start = System.currentTimeMillis();
-                int result = 0;
+                int result;
                 ModerrkowoLogger.log("Próba pobrania pieniędzy użytkownika (ASYNC)", this);
                 try{
                     String SQL = "SELECT `MONEY` FROM `bank_data` WHERE `UUID`=? LIMIT 1";

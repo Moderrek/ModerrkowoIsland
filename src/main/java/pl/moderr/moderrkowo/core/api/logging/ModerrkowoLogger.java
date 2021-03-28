@@ -4,7 +4,7 @@ import java.util.HashMap;
 
 public class ModerrkowoLogger {
 
-    public static HashMap<LogType, Boolean> logs = new HashMap<LogType, Boolean>(){
+    public final static HashMap<LogType, Boolean> logs = new HashMap<LogType, Boolean>(){
         {
             put(LogType.Unknown, true);
             put(LogType.Plugin, true);

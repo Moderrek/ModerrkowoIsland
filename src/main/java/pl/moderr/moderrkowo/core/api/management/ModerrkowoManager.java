@@ -4,14 +4,12 @@ import pl.moderr.moderrkowo.core.Main;
 
 public class ModerrkowoManager {
 
-    // Main
-    private final Main main;
     // Managers
     private final UserManager userManager;
 
     public ModerrkowoManager(Main main){
-        this.main = main;
-        userManager = new UserManager();
+        // Main
+        userManager = new UserManager(main);
     }
 
     public UserManager getUserManager() {
